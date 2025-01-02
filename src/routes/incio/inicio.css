@@ -1,0 +1,142 @@
+.Inicio {
+    display: flex;
+    align-self: center;
+    gap: 100px;
+    height: 100%;
+
+    .izquierda {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        text-align: center;
+
+        h1 {
+            font-size: 100px;
+            background: linear-gradient(to right, #ff0080, #eeee);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        h3 {
+            font-weight: 400;
+            max-width: 70%;
+        }
+        a{
+            padding: 15px 75px;
+            background-color: antiquewhite;
+            color: darkslateblue;
+            border-radius: 20px;
+            font-size: 18px;
+            margin-top: 20px;
+            font-style: bold;
+
+            
+            &:hover {
+                background-color: darkslateblue;
+                color: antiquewhite;
+            }
+        }
+    }
+    .derecha{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        .imgContainer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ff008076;
+            border-radius: 50px;
+            width: 80%;
+            height: 50%;
+            position: relative;
+
+            .bgcontainer{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 50px;
+
+                .bg{
+                    background-image: url("/bg.png");
+                    opacity: 0.2;
+                    width: 200%;
+                    height: 100%;
+                    background-size: auto 100%;
+                    animation: 8s ease-in-out infinite alternate slideBg;
+                }
+            }
+            
+            .bot{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                animation: 3s ease-in-out infinite alternate botAnimation;
+            }
+
+            .chatExample{
+                position: absolute;
+                bottom: -30px;
+                right: -50px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 20px;
+                background-color: darkslategrey;
+                border-radius: 10px;
+            }
+            img{
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+    }
+    .orbital{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        opacity: 0.1;
+        animation: 100s linear infinite rotateOrbital;
+    }
+}
+
+@keyframes rotateOrbital {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(60deg);
+    }
+    
+}
+
+@keyframes botAnimation {
+    0%{
+        transform: scale(1) rotate(0deg);
+    }
+    100%{
+        transform: scale(1.2) rotate(-8deg);
+    }
+    
+}
+
+@keyframes slideBg {
+    0%{
+        transform: translateX(0%);
+    }
+    100%{
+        transform: translateX(-50%);
+    }
+    
+}
