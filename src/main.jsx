@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from "react-router";
+import DashboardLayout from './layouts/dashboardLayout/DashboardLayout';
 import Dashboard from './routes/dashboard/Dashboard';
 import ChatPedidos from './routes/ChatPedidos/ChatPedidos';  
 import Inicio from './routes/incio/Inicio';
@@ -25,9 +26,12 @@ const router = createBrowserRouter([
         element: <SignUp />
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        element: <DashboardLayout />,
         children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard />,
+          },
           {
             path: "/dashboard/chats/:id",
             element: <ChatPedidos />,

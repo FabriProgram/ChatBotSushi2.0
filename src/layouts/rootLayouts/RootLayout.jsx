@@ -2,7 +2,6 @@ import { Link, Outlet } from "react-router";
 import './rootLayout.css'
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/clerk-react";
 
-//const publishableKey ="pk_test_ZmFtb3VzLW1vbmFyY2gtNTIuY2xlcmsuYWNjb3VudHMuZGV2JA"
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {

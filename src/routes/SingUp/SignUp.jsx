@@ -3,7 +3,7 @@ import { SignUp, } from '@clerk/clerk-react'
 
 const SignUp = () => {
     return (
-        <div className='signup'>
+        <div className="signup">
             <SignUp path="/sign-up" signInUrl="/sign-in" />
         </div>
     )
