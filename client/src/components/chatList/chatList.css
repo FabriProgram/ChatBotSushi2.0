@@ -16,4 +16,17 @@
         font-weight: 600;
         margin-bottom: 10px;
     }
+    .lista{
+        display: flex;
+        flex-direction: column;
+        overflow: scroll;
+    }
+    a{
+        padding: 10px;
+        border-radius: 10px;
+    
+        &:hover{
+            background-color: rgb(65, 62, 62);
+        }
+    }
 }
