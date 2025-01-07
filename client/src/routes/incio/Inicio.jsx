@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 import './inicio.css'
 
 const Inicio = () => {
-
     const [typingStatus, setTypingStatus] = useState("Persona");
 
     return (

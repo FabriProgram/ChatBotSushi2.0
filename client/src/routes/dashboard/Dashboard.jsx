@@ -1,21 +1,41 @@
 import './dashboard.css'
-import { useAuth } from '@clerk/clerk-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router';
 
 const Dashboard = () => {
-    const { userId } = useAuth();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        // Metodo POST para datos ingresados en el form  
+        mutationFn: (text) => {
+            return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            }).then((res) => res.json());
+        },
+        // Direcionamiento a la pagina del chat
+        onSuccess: (id) => {
+          queryClient.invalidateQueries({ queryKey: ['userChats'] })
+          navigate(`/dashboard/chats/${id}`);
+        },
+        // Fin direcionamiento
+    });
+    // Fin metodo POST
+    
+    // Funcion para enviar los datos del form y evitar entrada vacia
     const handleSubmit = async(e) => {
         e.preventDefault();
         const text = e.target.text.value;
         if (!text) return;
-
-        await fetch('http://localhost:3000/api/chats', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId, text}),
-        });
-    }
+        mutation.mutate(text);
+    };
+    // Fin de la funcion
+    
+    // Enviar el form en formato HTML al body de la pagina dashboard, al ejecutar la funcion Dashboard
     return (
         <div className='dashboard'>
             <div className='texto'>
@@ -43,7 +63,7 @@ const Dashboard = () => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;
