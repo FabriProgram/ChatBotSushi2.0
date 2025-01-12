@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Esquema de userChats para la base de datos
 const userChatsSchema = new mongoose.Schema({
     userId: {
         type: String,

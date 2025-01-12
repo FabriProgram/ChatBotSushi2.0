@@ -1,67 +1,80 @@
-//ESTA PAGINA ESTA INCOMPLETA!!
-import './newPrompt.css'
+import './newPrompt.css';
+import SushiBot from '../bot/SushiBot';
+import Markdown from 'react-markdown';
+import { useRef, useEffect, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useRef, useEffect, useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+//MIRAR BIEN LAS PORCIONES DE TEXTO COMENTADO ANTES DE TERMINAR.
 
 const NewPrompt = ({data}) => {
-    const [question, setQuestion] = useState("");
-    const [answer, setAnswer] = useState("");
-    
-    const chat = model.startChat({
-        history: [
-            data?.history.map(({ role, parts }) => ({
-                role,
-                parts: [{ text: parts[0].text }],
-            })),
-        ],
-    }); 
-
+    // creacion de Estructura del chat
+    const [pregunta, setPregunta] = useState("");
+    const [respuesta, setRespuesta] = useState(""); 
     const endRef = useRef(null);
     const formRef = useRef(null);
+    // Fin creacion de Estructura del chat
 
+    // Efecto para emprolijar el chat con scroll automatico
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [data, question, answer]);
+    }, [data, pregunta, respuesta]);
+    // Fin Efecto para emprolijar el chat con scroll automatico
 
+    
     const queryClient = useQueryClient();
     const mutation = useMutation({
+        // Actualizar el chat y llamar al metodo PUT para impactar en DB
         mutationFn: () => {
-            return fetch(`${import.meta.env.VITE_API_URL}/api/chats${data._id}`, {
+            return fetch(`${import.meta.env.VITE_API_URL}/chats/${data._id}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    question: question.length ? question : undefined,
-                    answer,
+                    pregunta: pregunta.length ? pregunta : undefined,
+                    respuesta,
                 }),
             }).then((res) => res.json());
         },
+        // Fin Actualizar el chat y llamar al metodo PUT para impactar en DB
+
+        // Resetear Chat al actualizar
         onSuccess: () => {
           queryClient
           .invalidateQueries({ queryKey: ['chat', data._id] })
           .then(() => {
             formRef.current.reset();
-            setQuestion("");
-            setAnswer("");
+            setPregunta("");
+            setRespuesta("");
           });
         },
         onError: (error) => {
           console.log(error);
         },
-      });
-    
-//ACA FALTA ALGO!! BUSCAR EN 3HS, 10MIN,
+        // Fin Resetear Chat al actualizar
+    });
 
+    // Setear la pregunta y la respuesta
+    
+    const add = (text, isInitial) => {
+        if (!isInitial) setPregunta(text);
+        const bot = SushiBot(text);
+        setRespuesta(bot);
+        mutation.mutate();
+        
+    }    
+    // Fin Setear la pregunta y la respuesta
+
+    // Funcion para enviar los datos del form y evitar entrada vacia
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const text = e.target[0].value;
+        const text = e.target.text.value;
         if (!text) return;
         add(text, false);    
     };
-
+    // Fin Funcion para enviar los datos del form y evitar entrada vacia
+    // Efecto para prevenir bug en el chat nuevo y que se ejecute 2 veces
     const hasRun = useRef(false);
     useEffect(() => {
         if (!hasRun.current) {
@@ -71,26 +84,24 @@ const NewPrompt = ({data}) => {
         }
         hasRun.current = true;
     }, []);
-
-    const add = async () => {
-        const promtp = "Probando";
-        const result = await chat.call(promtp);
-        console.log(result);
-    }
-    //ACA FALTA ALGO!! (IGNORAR IMAGENES NO AGREGAR)
-
+    // Fin Efecto para prevenir bug en el chat nuevo y que se ejecute 2 veces
     return (
-        <div>
-        <button onClick={add}>Test</button>
-        <div className='finDeChat' ref={endRef}></div>
-        <form className='newForm' onSubmit={handleSubmit} ref={formRef}>
-            <input type="text" placeholder="Cotinuemos con tu pedido" />
-            <button>
-                <img src="/arrow.png" alt="" />
-            </button>
-        </form>
-        </div>
-    )
-}
+        <>
+            {pregunta && <div className='mensaje usuario'>{pregunta}</div>}
+            {respuesta && (
+                <div className='mensaje'>
+                    <Markdown>{respuesta}</Markdown>
+                </div>
+            )}
+            <div className='finDeChat' ref={endRef}></div>
+            <form className='newForm' onSubmit={handleSubmit} ref={formRef}>
+                <input type="text" name='text' placeholder="Cotinuemos con tu pedido" />
+                <button>
+                    <img src="/arrow.png" alt="" />
+                </button>
+            </form>
+        </>
+    );
+};
 
 export default NewPrompt

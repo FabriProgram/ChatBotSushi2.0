@@ -4,20 +4,21 @@ import mongoose from "mongoose";
 import Chat from "./models/chat.js";
 import UserChats from "./models/userChats.js";
 import path from "path";
-import url, { fileURLToPath } from "url";
-import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
-
+import { fileURLToPath } from "url";
+import { requireAuth } from '@clerk/express';
 
 const port = process.env.PORT || 3000;
 const app = express();
+// Constantes para modo deploy
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+// Fin de constantes para modo deploy
 
 // Conexion a la base de datos
 const connect = async ()=>{
     try{
         await mongoose.connect(process.env.MONGO);
-        console.log("Connected to MongoDB");
+        console.log("Conectado a MongoDB");
     }catch(error){
         console.log(error);
     }
@@ -26,17 +27,19 @@ const connect = async ()=>{
 
 // Middlewares
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: "http://localhost:5173",
+    //origin: process.env.CLIENT_URL, -- NO PUDE LOGRAR LEER LA VARIABLE DE ENTORNO CON EL COMANDO PROCESS :(
     credentials: true,
 }));
 
 app.use(express.json());
+// Fin Middlewares
 
-    // Rutas de metodos y endpoints
+// Rutas de metodos y endpoints
     // metodo post para datos obtenidos del user    
-app.post("/api/chats", async (req, res) => {
+app.post("/chats", requireAuth(), async (req, res) => {
     const userId = req.auth.userId;
-    const {text} = req.body;
+    const { text } = req.body;
     try{
         // Crear un nuevo chat
         const newChat = new Chat({
@@ -44,21 +47,22 @@ app.post("/api/chats", async (req, res) => {
             history: [
                 {
                     role: "user",
-                    parts: [{text}]
-                }
-            ]
+                    parts: [{ text }],
+                },
+            ],
         });
         // Fin Crear un nuevo chat
 
         // Guardar el chat y chequear si el user no existe para agregarlo a DB
         const savedChat = await newChat.save();    
-        const userChats = await UserChats.findOne({ userId: userId });
+        const userChats = await UserChats.find({ userId: userId });
         if (!userChats.length) {
             const newUserChats = new UserChats({
                 userId: userId,
                 chats: [
-                    {_id: savedChat._id,
-                    title: text.substring(0, 20),
+                    {
+                        _id: savedChat._id,
+                        title: text.substring(0, 20),
                     },
                 ],
             });
@@ -89,13 +93,12 @@ app.post("/api/chats", async (req, res) => {
     // Fin metodo post para datos obtenidos del user
     
     // Obtener datos de user
-app.get("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
+app.get("/userchats", requireAuth(), async (req, res) => {
     const userId = req.auth.userId;
-    try{
-        const userChats = await userChats.find({userId});
-
+    try {
+        const userChats = await UserChats.find({ userId });
         res.status(200).send(userChats[0].chats);
-    }catch(error){
+    } catch (error) {
         //Manejo de error al no obtener el id del user
         console.log(error);
         res.status(500).send("Error, no se encuentra el usario");
@@ -105,32 +108,31 @@ app.get("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
 //fin de obtener datos de user
 
 // Obtener el chat del user
-app.get("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
+app.get("/chats/:id", requireAuth(), async (req, res) => {
     const userId = req.auth.userId;
-    try{
+    try {
         const chat = await Chat.findOne({ _id: req.params.id, userId });
-
         res.status(200).send(chat);
-    }catch(error){
+    } catch (error) {
         //Manejo de error al obtener los chats
         console.log(error);
         res.status(500).send("Error al obtener los chats");
         //Fin Manejo de error al obtener los chats
     }
-});//fin de obtener el chat del user
-
-// Actualizar el chat con POST
-app.put("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
+});
+//fin de obtener el chat del user
+// Actualizar el chat con PUT
+app.put("/chats/:id", requireAuth(), async (req, res) => {
     const userId = req.auth.userId;
-    const { question, answer } = req.body;
+    const { pregunta, respuesta } = req.body;
     const newItem = [
-        ...(question
-        ? [{ role: "user", parts: [{ text: question }]}]
+        ...(pregunta
+        ? [{ role: "user", parts: [{ text: pregunta }]}]
         : []), 
-        { role: "model", parts: [{ text: answer }] },
+        { role: "bot", parts: [{ text: respuesta }] },
     ];
     try {
-        const updateChat = await Chat.findOne(
+        const updateChat = await Chat.updateOne(
             { _id: req.params.id, userId },
             {
                 $push: {
@@ -146,25 +148,26 @@ app.put("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
         res.status(500).send("Error al actualizar el chat");
     }   //Fin Manejo de error al actualizar el chat
 });
-// Fin de Actualizar el chat con POST
+// Fin de Actualizar el chat con PUT
 
-    //Manejo de Error en la autenticacion
+//Manejo de Error en la autenticacion
 app.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(401).send('No se puede comprobar tus credenciales!')
-  });
-    // Fin Manejo de Error en la autenticacion
+});
+// Fin Manejo de Error en la autenticacion
 
-    // Ruteo de la aplicacion
+// Ruteo de la aplicacion para probarla en modo deploy
 app.use(express.static(path.join(__dirname, "../client")));
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../client", "index.html"))
-}); //Fin Ruteo de la aplicacion
+}); 
+//Fin Ruteo de la aplicacion para probarla en modo deploy
 //Fin de rutas y endpoints
 
 // Prueba de servidor
 app.listen(port, () => {
     connect();
-    console.log(`Listening on port ${port}`);
+    console.log(`Servidor corriendo en puerto ${port}`);
 });
 // Fin pruea de servidor

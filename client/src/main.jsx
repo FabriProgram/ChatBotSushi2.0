@@ -7,8 +7,10 @@ import Dashboard from './routes/dashboard/Dashboard';
 import ChatPedidos from './routes/ChatPedidos/ChatPedidos';  
 import Inicio from './routes/incio/Inicio';
 import RootLayout from './layouts/rootLayouts/RootLayout';
-import { SignIn, SignUp } from '@clerk/clerk-react';
+import Logueo from './routes/Logueo/SignIn';
+import Registrarse from './routes/Registrarse/SignUp';
 
+//Ruteo de paginas
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
@@ -19,11 +21,11 @@ const router = createBrowserRouter([
       },
       {
         path: "sign-in/*",
-        element: <SignIn />
+        element: <Logueo />,
       },
       {
         path: "sign-up/*",
-        element: <SignUp />
+        element: <Registrarse />,
       },
       {
         element: <DashboardLayout />,

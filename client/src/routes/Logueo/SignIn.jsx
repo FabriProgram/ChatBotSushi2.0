@@ -1,7 +1,7 @@
 import './signIn.css'
 import { SignIn } from '@clerk/clerk-react'
 
-const SignIn = () => {
+const Logueo = () => {
     return (
         <div className='signin'>
             <SignIn 
@@ -13,4 +13,4 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+export default Logueo

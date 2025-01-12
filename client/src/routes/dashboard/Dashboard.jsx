@@ -8,7 +8,7 @@ const Dashboard = () => {
     const mutation = useMutation({
         // Metodo POST para datos ingresados en el form  
         mutationFn: (text) => {
-            return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+            return fetch(`${import.meta.env.VITE_API_URL}/chats`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -26,7 +26,7 @@ const Dashboard = () => {
     });
     // Fin metodo POST
     
-    // Funcion para enviar los datos del form y evitar entrada vacia
+    // Funcion para enviar los datos del form y evitar entrada vacia 
     const handleSubmit = async(e) => {
         e.preventDefault();
         const text = e.target.text.value;
@@ -48,16 +48,12 @@ const Dashboard = () => {
                         <img src="/chat.png" alt="" />
                         <span>Empezar un nuevo chat</span>
                     </div>
-                    <div className='opcion'>
-                        <img src="/code.png" alt="" />
-                        <span>Ayuda con mi chat</span>
-                    </div>
                 </div>
             </div>
             <div className='formContainer'>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="text" placeholder="Cotinuemos con tu pedido" />
-                    <button>
+                    <input type="text" name="text" id="input-usuario" placeholder="Empecemos con tu pedido" />
+                    <button id='enviar'>
                         <img src="/arrow.png" alt="" />
                     </button>
                 </form>

@@ -1,7 +1,7 @@
-import { TypeAnimation } from 'react-type-animation'
-import { useState } from 'react'
-import { Link } from 'react-router'
-import './inicio.css'
+import { TypeAnimation } from 'react-type-animation';
+import { useState } from 'react';
+import { Link } from 'react-router';
+import './inicio.css';
 
 const Inicio = () => {
     const [typingStatus, setTypingStatus] = useState("Persona");
@@ -55,6 +55,6 @@ const Inicio = () => {
         </div>
     </div>
 )
-}
+};
 
 export default Inicio

@@ -24,6 +24,8 @@
 
             .mensaje{
                 padding: 20px;
+                background-color: #747378;
+                border-radius: 20px;
 
                 &.usuario{
                     background-color: #2c2937;
