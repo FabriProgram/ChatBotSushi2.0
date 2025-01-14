@@ -20,82 +20,109 @@ normalmente, también se otorgara una breve descripción de cada dependencia.
 
 ## Instalacion
 
-dependencias:
-Cliente:
+### dependencias:
+### Cliente:
 ** Las dependencias que se mencionan a continuación deben ser instaladas en el directorio client ** 
 
-Posicionarse en el directorio client:
-cd client
+###### Posicionarse en el directorio client:
+/cd client
 
 Luego instalar las siguientes dependencias:
 
-react: (dependencia requerida para realizar la prueba)
+#### react: 
+(dependencia requerida para realizar la prueba)
+
 npm i
 
-React type animation: (Facilita estilos de animacion para el front end)
+#### React type animation: 
+(Facilita estilos de animacion para el front end)
+
 npm install react-type-animation
 
-Clerk: (Automatiza logueos dando seguridad al proyecto)
+#### Clerk: 
+(Automatiza logueos dando seguridad al proyecto)
+
 npm install @clerk/clerk-react
 
-Vite: (Facilita el uso de ract-route) 
-npx create-react-router@latest my-react-router-app
+#### Vite: 
+(Facilita el uso de react-route) 
 
-npx create-vite@latest 
-(para poder usar react router, pero puede que duplique la carpeta node-modules)
+npx create-react-router@latest my-react-router-app 
 
-react router v7: (Facilita la utiizacion de rutas)
+
+#### react router v7: 
+(Facilita la utiizacion de rutas)
+
 npm i react-router
 
-Tanstack-query: (Para llamar a query usando atajos y hacer más cortas las invocaciones)
+#### Tanstack-query: 
+(Para llamar a query usando atajos y hacer más cortas las invocaciones)
+
 npm i @tanstack/react-query
 
--------------------------------**-----------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
 
-Backend:
+### Backend:
 ** Las dependencias que se mencionan a continuación deben ser instaladas en el directorio backend ** 
 
-Posicionarse en el directorio client:
-cd backend
+###### Posicionarse en el directorio client:
+/cd backend
 
 Luego instalar las siguientes dependencias:
 
-nodemon: (dependencia requerida para realizar la prueba)
+#### nodemon: 
+(dependencia requerida para realizar la prueba)
+
 npm i nodemon
 
-Express: (dependencia requerida para realizar la prueba)
+#### Express: 
+(dependencia requerida para realizar la prueba)
+
 npm i express
 
-Clerk: (para utilizar clerk, pero en funciones de backend, es distinto al clerk del frontend)
+#### Clerk:
+(para utilizar clerk, pero en funciones de backend, es distinto al clerk del frontend)
+
 npm install @clerk/express
 
-Cors: (necesario para funciones de protocolos de seguridad)
+#### Cors:
+(necesario para funciones de protocolos de seguridad)
+
 npm i cors
 
-mongoDb: (dependencia requerida para realizar la prueba) 
+#### mongoDb: 
+(dependencia requerida para realizar la prueba) 
+
 npm i mongodb 
 
-mongoose: (middleware para acceder a MongoDB) 
+#### mongoose:
+(middleware para acceder a MongoDB) 
+
 npm i mongoose --save
 
 (Para uso posterior en casa de querer hacer un deploy del proyecto para otro tipo de testo)
 npm i path url
 
 
-### Ejecutar el proyecto
+## Ejecutar el proyecto
 
 Una vez instaladas todas las dependencias se puede ejecutar el proyecto por un lado y el backend por otro y que interactuen entre si.
 para hacerlo hay que abrir dos terminales:
 
 en una se debe posicionarse en el directorio Client y ejecutar el siguiente comando:
-cd client
+
+##### en client
+/cd client
+
 client/npm run dev
 
-en backend:
-cd backend
+##### en backend:
+
+/cd backend
+
 backend/ npm start
 
-#### Aclaraciones
+### Aclaraciones
 Por último quiero abrir la puerta a cualquier comunicación que este proyecto pueda generar, ya sea un feedback del trabajo realizado, o una seugerencia para modificar o mejorar algo (que seguro se puede),
 o cualquier duda que pueda surgir a la hora de ejecutar el proyecto.
