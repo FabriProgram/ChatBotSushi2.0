@@ -30,7 +30,7 @@ const Inicio = () => {
                             () => {
                                 setTypingStatus("SushiBot");
                             },
-                            'SushiBot: Si de 19hs a 01hs (horario de Argentina)',
+                            'SushiBot: Si de 10hs a 15hs y de 19hs a 01hs (horario de Argentina)',
                             2000,
                             () => {
                                 setTypingStatus("Persona");

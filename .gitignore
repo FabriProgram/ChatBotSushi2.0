@@ -1,4 +1,8 @@
+# Este archivo .gitignore debe ir colocado en el directorio raiz de todo el proyecto
+# en el caso del creador del proyecto es ./ChatBotSushi2.0
+# Si no se hace de ese modo, puede fallar su configuración
 # Logs
+
 logs
 *.log
 npm-debug.log*
@@ -12,7 +16,7 @@ dist
 dist-ssr
 *.local
 *.env
-*.gitignore
+.gitignore
 
 # Editor directories and files
 .vscode/*

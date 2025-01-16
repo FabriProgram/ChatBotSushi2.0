@@ -28,7 +28,7 @@ const connect = async ()=>{
 // Middlewares
 app.use(cors({
     origin: "http://localhost:5173",
-    //origin: process.env.CLIENT_URL, -- NO PUDE LOGRAR LEER LA VARIABLE DE ENTORNO CON EL COMANDO PROCESS :(
+    //origin: process.env.CLIENT_URL, NO PUDE HACER FUNCIOANR ESTA LINEA DE CODIGO
     credentials: true,
 }));
 

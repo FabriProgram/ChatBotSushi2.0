@@ -1,6 +1,5 @@
 import './newPrompt.css';
 import SushiBot from '../bot/SushiBot';
-import Markdown from 'react-markdown';
 import { useRef, useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -60,9 +59,10 @@ const NewPrompt = ({data}) => {
     const add = (text, isInitial) => {
         if (!isInitial) setPregunta(text);
         const bot = SushiBot(text);
+        document.querySelector('.mensaje').insertAdjacentHTML('afterend', `<div>${bot}</div>`);
         setRespuesta(bot);
         mutation.mutate();
-        
+        //console.log(bot);
     }    
     // Fin Setear la pregunta y la respuesta
 
@@ -71,7 +71,7 @@ const NewPrompt = ({data}) => {
         e.preventDefault();
         const text = e.target.text.value;
         if (!text) return;
-        add(text, false);    
+        add(text, false);   
     };
     // Fin Funcion para enviar los datos del form y evitar entrada vacia
     // Efecto para prevenir bug en el chat nuevo y que se ejecute 2 veces
@@ -90,7 +90,7 @@ const NewPrompt = ({data}) => {
             {pregunta && <div className='mensaje usuario'>{pregunta}</div>}
             {respuesta && (
                 <div className='mensaje'>
-                    <Markdown>{respuesta}</Markdown>
+                    {respuesta}
                 </div>
             )}
             <div className='finDeChat' ref={endRef}></div>

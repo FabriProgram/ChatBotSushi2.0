@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router';
 import './chatPedidos.css';
 import { useQuery } from '@tanstack/react-query';
-import Markdown from 'react-markdown';
 import NewPrompt from '../../components/newPrompt/NewPrompt';
 
 const ChatPedidos = () => {
@@ -30,7 +29,7 @@ const ChatPedidos = () => {
                                 ? "mensaje usuario"
                                 : "mensaje"}
                               key={i}>
-                                <Markdown>{mensaje.parts[0].text}</Markdown>
+                                {mensaje.parts[0].text}
                             </div>
                         ))}
                     {data && <NewPrompt data={data} />}
